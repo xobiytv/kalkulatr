@@ -110,8 +110,10 @@ function App() {
     const formattedResults = results.map(result => {
       return `${result.name}: ${result.soni} x ${result.narxi} = ${result.result} SUM\n`;
     }).join('');
-    const userNam = `Mijoz ismi: ${userName}`
-    const text = `Sizning mahsulotlar natijalaringiz:\n${formattedResults}\nJami summa: ${total} SUM`;
+    const userNam = `Mijoz ismi: ${userName}`;
+    const currentDate = new Date().toLocaleDateString();
+    const text = `Mijoz ma'lumotlari:\n${userNam}\nSana: ${currentDate}\n\nMahsulotlar natijalari:\n${formattedResults}\nJami summa: ${total} SUM`;
+
     if (navigator.share) {
       navigator.share({
         title: `${userNam}, Sizning mahsulotlar natijalaringiz`,
@@ -120,9 +122,8 @@ function App() {
         .then(() => console.log('Successfully shared'))
         .catch((error) => console.error('Error sharing:', error));
     } else {
-      // Fallback if Web Share API is not supported
       console.log('Web Share API is not supported.');
-      alert(text); // This will show a browser alert with the shared text
+      alert(text); // Fallback if Web Share API is not supported
     }
   };
 
@@ -182,7 +183,7 @@ function App() {
               <h2 className="text-xl font-bold mb-4">Chek: </h2>
               <div className='flex justify-between'>
                 <b>Mijoz ismi: {userName}</b>
-                <b>Sana: {userName}</b>
+                <b>Sana: {new Date().toLocaleDateString()}</b>
               </div>
 
               <table className="min-w-full bg-white">
@@ -227,4 +228,3 @@ function App() {
 }
 
 export default App;
-
