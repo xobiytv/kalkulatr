@@ -43,7 +43,7 @@ function App() {
       { soni: 'doskaSoni', narxi: 'doskaNarxi' },
     ];
 
-    let totalSum = [];
+    let totalSum = 0;
     let results = [];
 
     items.forEach(item => {
@@ -167,8 +167,8 @@ function App() {
               name={`${item.id}Narxi`}
               type="number"
               value={formData[`${item.id}Narxi`]}
-              // onChange={handleInputChange}
-              required
+              onChange={handleInputChange}
+              // required
             />
             {/* <span className="ml-4 text-lg font-semibold">{formData[`${item.id}Soni`] * formData[`${item.id}Narxi`] || 0} sum</span> */}
           </div>
