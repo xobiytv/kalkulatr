@@ -6,7 +6,7 @@ import 'tailwindcss/tailwind.css';
 
 function App() {
   const [formData, setFormData] = useState({
-    name: '',
+    userName: '',
     laminatSoni: 0,
     laminatNarxi: 0,
     akrelSoni: 0,
@@ -29,6 +29,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [results, setResults] = useState([]);
+  const [userName, setUserName] = useState('');
 
   const calculateAndDisplayResult = () => {
     const items = [
@@ -63,8 +64,12 @@ function App() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    calculateAndDisplayResult();
+    if (name === 'userName') {
+      setUserName(value);
+    } else {
+      setFormData({ ...formData, [name]: value });
+      calculateAndDisplayResult();
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -72,9 +77,10 @@ function App() {
     setLoading(true);
 
     const data = {
-      name: formData.name,
+      userName: userName,
       soni: total,
       total,
+      results,
     };
 
     try {
@@ -98,17 +104,17 @@ function App() {
     } finally {
       setLoading(false);
     }
-
   };
 
-  const shareResults = (results) => {
+  const shareResults = () => {
     const formattedResults = results.map(result => {
       return `${result.name}: ${result.soni} x ${result.narxi} = ${result.result} SUM\n`;
     }).join('');
+    const userNam = `Mijoz ismi: ${userName}`
     const text = `Sizning mahsulotlar natijalaringiz:\n${formattedResults}\nJami summa: ${total} SUM`;
     if (navigator.share) {
       navigator.share({
-        title: 'Sizning mahsulotlar natijalaringiz',
+        title: `${userNam}, Sizning mahsulotlar natijalaringiz`,
         text: text,
       })
         .then(() => console.log('Successfully shared'))
@@ -130,8 +136,8 @@ function App() {
           variant="outlined"
           fullWidth
           margin="normal"
-          name="name"
-          value={formData.name}
+          name="userName"
+          value={userName}
           onChange={handleInputChange}
           required
         />
@@ -157,7 +163,6 @@ function App() {
               type="number"
               value={formData[`${item.id}Soni`]}
               onChange={handleInputChange}
-              // required
             />
             <TextField
               label="Narxi"
@@ -168,53 +173,58 @@ function App() {
               type="number"
               value={formData[`${item.id}Narxi`]}
               onChange={handleInputChange}
-              // required
             />
-            {/* <span className="ml-4 text-lg font-semibold">{formData[`${item.id}Soni`] * formData[`${item.id}Narxi`] || 0} sum</span> */}
           </div>
         ))}
+        <div className="mt-6">
+          {results.length > 0 && (
+            <>
+              <h2 className="text-xl font-bold mb-4">Chek: </h2>
+              <div className='flex justify-between'>
+                <b>Mijoz ismi: {userName}</b>
+                <b>Sana: {userName}</b>
+              </div>
 
-      
-
-        {results.length > 0 && (
-          <div className="mt-6">
-            <h2 className="text-xl font-bold mb-4">Chek</h2>
-            <table className="min-w-full bg-white">
-              <thead>
-                <tr>
-                  <th className="py-2 px-4 border">Nomi</th>
-                  <th className="py-2 px-4 border">Mahsulot hajmi</th>
-                  <th className="py-2 px-4 border">Hisobi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {results.map((result, index) => (
-                  <tr key={index}>
-                    <td className="py-2 px-4 border">{result.name}</td>
-                    <td className="py-2 px-4 border">{result.soni} x {result.narxi}</td>
-                    <td className="py-2 px-4 border">{result.result} SUM</td>
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr>
+                    <th className="py-2 px-4 border">Nomi</th>
+                    <th className="py-2 px-4 border">Mahsulot hajmi</th>
+                    <th className="py-2 px-4 border">Hisobi</th>
                   </tr>
-                ))}
-                <tr>
-                  <td colSpan="2" className="py-2 px-4 border font-bold">Jammi summa</td>
-                  <td className="py-2 px-4 border font-bold">{total} SUM</td>
-                </tr>
-                <td colSpan="3" className="py-2 px-4 border text-center">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => shareResults(results)}
-                    >
-                      Natijalarni Share qilish
-                    </Button>
-                  </td>
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {results.map((result, index) => (
+                    <tr key={index}>
+                      <td className="py-2 px-4 border">{result.name}</td>
+                      <td className="py-2 px-4 border">{result.soni} x {result.narxi}</td>
+                      <td className="py-2 px-4 border">{result.result} SUM</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan="2" className="py-2 px-4 border font-bold">Jammi summa</td>
+                    <td className="py-2 px-4 border font-bold">{total} SUM</td>
+                  </tr>
+                  <tr>
+                    <td colSpan="3" className="py-2 px-4 border text-center">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => shareResults(results)}
+                      >
+                        Natijalarni Share qilish
+                      </Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
       </form>
     </div>
   );
 }
 
 export default App;
+
