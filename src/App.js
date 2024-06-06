@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 import 'tailwindcss/tailwind.css';
 
 function App() {
@@ -56,7 +56,6 @@ function App() {
     items.forEach(item => {
       const soniValue = formData[item.soni];
       const narxiValue = formData[item.narxi];
-
       if (soniValue && narxiValue) {
         const resultValue = soniValue * narxiValue;
         totalSum += resultValue;
@@ -67,18 +66,20 @@ function App() {
     setTotal(totalSum);
     setResults(results);
   };
-  console.log(total);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === 'userName') {
       setUserName(value);
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData({ ...formData, [name]: parseInt(value) });
       calculateAndDisplayResult();
     }
   };
 
+  const handleSaveValues = () => {
+    calculateAndDisplayResult();
+  };
 
   const shareResults = () => {
     const formattedResults = results.map(result => {
@@ -97,7 +98,7 @@ function App() {
         .catch((error) => console.error('Error sharing:', error));
     } else {
       console.log('Web Share API is not supported.');
-      alert(text); // Fallback if Web Share API is not supported
+      alert(text);
     }
   };
 
@@ -155,6 +156,16 @@ function App() {
             />
           </div>
         ))}
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleSaveValues}
+        >
+          Hisobni tekshirish
+        </Button>
+
         <div className="mt-6">
           {results.length > 0 && (
             <>
@@ -163,7 +174,6 @@ function App() {
                 <b>Mijoz ismi: {userName}</b>
                 <b>Sana: {new Date().toLocaleDateString()}</b>
               </div>
-
               <table className="min-w-full bg-white">
                 <thead>
                   <tr>
