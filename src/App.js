@@ -9,6 +9,8 @@ function App() {
     userName: '',
     laminatSoni: 0,
     laminatNarxi: 0,
+    laminatKesishSoni: 0,
+    laminatKesishNarxi: 0,
     akrelSoni: 0,
     akrelNarxi: 0,
     akrelKesishSoni: 0,
@@ -25,6 +27,8 @@ function App() {
     oqDvpNarxi: 0,
     doskaSoni: 0,
     doskaNarxi: 0,
+    mdfSoni: 0,
+    mdfNarxi: 0,
   });
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -34,6 +38,7 @@ function App() {
   const calculateAndDisplayResult = () => {
     const items = [
       { soni: 'laminatSoni', narxi: 'laminatNarxi' },
+      { soni: 'laminatKesishSoni', narxi: 'laminatKesishNarxi' },
       { soni: 'akrelSoni', narxi: 'akrelNarxi' },
       { soni: 'akrelKesishSoni', narxi: 'akrelKesishNarxi' },
       { soni: 'xdpiSoni', narxi: 'xdpiNarxi' },
@@ -42,6 +47,7 @@ function App() {
       { soni: 'dvpSoni', narxi: 'dvpNarxi' },
       { soni: 'oqDvpSoni', narxi: 'oqDvpNarxi' },
       { soni: 'doskaSoni', narxi: 'doskaNarxi' },
+      { soni: 'mdfSoni', narxi: 'mdfNarxi' },
     ];
 
     let totalSum = 0;
@@ -61,6 +67,7 @@ function App() {
     setTotal(totalSum);
     setResults(results);
   };
+  console.log(total);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,39 +79,6 @@ function App() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const data = {
-      userName: userName,
-      soni: total,
-      total,
-      results,
-    };
-
-    try {
-      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result = await response.json();
-      if (result.result === 'success') {
-        alert('Ma\'lumotlar muvaffaqiyatli yuborildi!');
-      } else {
-        alert('Xatolik yuz berdi, iltimos yana urinib ko\'ring.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Xatolik yuz berdi, iltimos yana urinib ko\'ring.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const shareResults = () => {
     const formattedResults = results.map(result => {
@@ -129,7 +103,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg" onSubmit={handleSubmit}>
+      <form className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg" >
         <h1 className="text-2xl font-bold mb-4">Kankulatur</h1>
 
         <TextField
@@ -145,6 +119,7 @@ function App() {
 
         {[
           { id: 'laminat', label: 'Laminat' },
+          { id: 'laminatKesish', label: 'Laminat Kesish' },
           { id: 'akrel', label: 'Akrel' },
           { id: 'akrelKesish', label: 'Akrel Kesish' },
           { id: 'xdpi', label: 'XDPI' },
@@ -153,16 +128,18 @@ function App() {
           { id: 'dvp', label: 'DVP' },
           { id: 'oqDvp', label: 'Oq DVP' },
           { id: 'doska', label: 'Doska' },
+          { id: 'mdf', label: 'MDF' },
         ].map((item) => (
           <div className="flex gap-4 items-end mb-4" key={item.id}>
             <TextField
-              label={`${item.label} ob ketish (Soni)`}
+              label={`${item.label} (Soni)`}
               variant="outlined"
               fullWidth
               margin="normal"
               name={`${item.id}Soni`}
               type="number"
               value={formData[`${item.id}Soni`]}
+              inputProps={{ min: 0 }}
               onChange={handleInputChange}
             />
             <TextField
@@ -173,6 +150,7 @@ function App() {
               name={`${item.id}Narxi`}
               type="number"
               value={formData[`${item.id}Narxi`]}
+              inputProps={{ min: 0 }}
               onChange={handleInputChange}
             />
           </div>
@@ -213,7 +191,7 @@ function App() {
                         color="primary"
                         onClick={() => shareResults(results)}
                       >
-                        Natijalarni Share qilish
+                        Hisobni ulalish
                       </Button>
                     </td>
                   </tr>
