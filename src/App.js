@@ -69,7 +69,7 @@ function App() {
     }).join('');
     const userNam = `Mijoz ismi: ${userName}`;
     const currentDate = new Date().toLocaleDateString();
-    const text = `Mijoz ma'lumotlari:\n${userNam}\nSana: ${currentDate}\n\nMahsulotlar natijalari:\n${formattedResults}\nJami summa: ${total} SUM\nTo'langan summa: ${formData.totalPaid} SUM\nQarzdorlik: ${total - formData.totalPaid} SUM`;
+    const text = `Mijoz ma'lumotlari:\n${userNam}\nSana: ${currentDate}\n\nMahsulotlar natijalari:\n${formattedResults}\nJami summa: ${total} SUM\nTo'langan summa: ${formData.totalPaid} SUM\nPlastik orqali to'langan: ${formData.plasticPayment} SUM\nQarzdorlik: ${total - formData.totalPaid - formData.plasticPayment} SUM`;
 
     if (navigator.share) {
       navigator.share({
@@ -123,7 +123,7 @@ function App() {
 
         {inputs.map((input) => (
           <div key={input.id}>
-            <div className="flex gap-4 items-end mb-4">
+            <div className="flex gap-4 items-end ">
               <TextField
                 select
                 label="Mahsulot Nomi"
@@ -141,9 +141,7 @@ function App() {
                   </MenuItem>
                 ))}
               </TextField>
-            </div>
-
-            <div className="flex gap-4 items-end mb-4">
+           
               <TextField
                 select
                 label="Mahsulot Turi"
@@ -248,8 +246,6 @@ function App() {
           </Button>
         </div>
 
-
-
         <div className="mt-6">
           {results.length > 0 && (
             <>
@@ -278,7 +274,7 @@ function App() {
                   ))}
                   <tr>
                     <td colSpan="2" className="py-2 px-4 border font-bold">Jami summa</td>
-                    <td  colSpan="2" className="py-2 px-4 border font-bold  text-end">{total} SUM</td>
+                    <td colSpan="2" className="py-2 px-4 border font-bold  text-end">{total} SUM</td>
                   </tr>
                   <tr>
                     <td colSpan="2" className="py-2 px-4 border font-bold">Naqt to'langan </td>
@@ -288,8 +284,8 @@ function App() {
                     <td colSpan="2" className="py-2 px-4 border font-bold">Plastik orqali to'langan</td>
                     <td colSpan="2" className="py-2 px-4 border font-bold  text-end">{formData.plasticPayment} SUM</td>
                   </tr>
-                  <tr className='bg-red-600 text-white'>
-                    <td  colSpan="2" className="py-2 px-4 border font-bold">Qarzdorlik</td>
+                  <tr>
+                    <td colSpan="2" className="py-2 px-4 border font-bold">Qarzdorlik</td>
                     <td colSpan="2" className="py-2 px-4 border font-bold text-end">{totalAfterPayments} SUM</td>
                   </tr>
                   <tr>
