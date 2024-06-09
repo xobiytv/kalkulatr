@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 // import CircularProgress from '@mui/material/CircularProgress';
 import 'tailwindcss/tailwind.css';
+import { productOptions } from './API';
 
 function App() {
   const formRef = useRef(null);
@@ -22,85 +23,6 @@ function App() {
   const [userName, setUserName] = useState('');
   const [inputs, setInputs] = useState([{ id: Date.now() }]);
   const [showPlasticPayment, setShowPlasticPayment] = useState(false);
-
-  const productOptions = [
-    { id: 'laminat', label: 'Laminat', subOptions: [
-      { id: 'AntikOch', label: 'Antik Och' }, 
-      { id: 'AntikSridniy', label: 'AntikSridniy' },
-      { id: 'AntikTuq', label: 'Antik Tuq' },
-      { id: 'ArushaOch', label: 'Arusha Och' },
-      { id: 'ArushaTuq', label: 'Arusha Tuq' },
-      { id: 'Atlas', label: 'Atlas' },
-      { id: 'Avstraliya', label: 'Avstraliya' },
-      { id: 'Aziya', label: 'Aziya' },
-      { id: 'BelayaKarona', label: 'BelayaKarona' },
-      { id: 'Efes', label: 'Efes' },
-      { id: 'Ekko', label: 'Ekko' },
-      { id: 'Enoks', label: 'Enoks' },
-      { id: 'Flarinso', label: 'Flarinso' },
-      { id: 'KaspiyTuq', label: 'KaspiyTuq' },
-      { id: 'LiftTuq', label: 'LiftTuq' },
-      { id: 'Lipa', label: 'Lipa' },
-      { id: 'LoftOch', label: 'LoftOch' },
-      { id: 'Luna', label: 'Luna' },
-      { id: 'Marmar', label: 'Marmar' },
-      { id: 'Minji', label: 'Minji' },
-      { id: 'Mokriy', label: 'Mokriy' },
-      { id: 'Oq', label: 'Oq' },
-      { id: 'OqShagniy', label: 'OqShagniy' },
-      { id: 'Paladina', label: 'Paladina' },
-      { id: 'Picar', label: 'Picar' },
-      { id: 'Qaymoq', label: 'Qaymoq' },
-      { id: 'Qora', label: 'Qora' },
-      { id: 'QoraShagniy', label: 'QoraShagniy' },
-      { id: 'Salativiy', label: 'Salativiy' },
-      { id: 'Sanama', label: 'Sanama' },
-      { id: 'Sofiya', label: 'Sofiya' },
-      { id: 'Stalnoy', label: 'Stalnoy' },
-      { id: 'Vatan', label: 'Vatan' },
-      { id: 'YangiRang', label: 'YangiRang' },
-      { id: 'Yasin', label: 'Yasin' },
-      { id: 'Yukon', label: 'Yukon' },
-      { id: 'kaspiyOch', label: 'Kaspiy Och' },
-      { id: 'mokriyShagrin', label: 'Mokriy Shagrin' },
-      { id: 'oqMatve', label: 'Oq Matve' },
-      { id: 'qizil', label: 'qizil' },
-     
-    ] },
-
-    { id: 'DSP', label: 'DSP', subOptions: [
-      { id: '5kv', label: '5kv' }, 
-      { id: '6kv', label: '5kv' }
-    ] },
-    { id: 'Akrel', label: 'Akrel', subOptions: [
-      { id: 'Akrel', label: 'Akrel' }, 
-    ] },
-    { id: 'Doska', label: 'Doska', subOptions: [
-      { id: 'Doska', label: 'Doska' }, 
-    ] },
-    { id: 'XDF', label: 'XDF', subOptions: [
-      { id: 'XDF', label: 'XDF' }, 
-    ] },
-
-    { id: 'MDF', label: 'MDF', subOptions: [
-      { id: 'AntikSridniyQimmat', label: 'Antik Sridniy Qimmat' }, 
-      { id: 'AntikTuq', label: 'Antik Tuq' },
-      { id: 'Arusha Och', label: 'Arusha Och' },
-      { id: 'ArushaTuqArzon', label: 'Arusha Tuq Arzon' },
-      { id: 'ArushaTuqQimmat', label: 'Arusha Tuq Qimmat' },
-      { id: 'Astana', label: 'Astana' },
-      { id: 'Atlas', label: 'Atlas' },
-      { id: 'Avstraliya', label: 'Avstraliya' },
-      { id: 'Aziya', label: 'Aziya' },
-      { id: 'Marmar', label: 'Marmar' },
-      { id: 'Oq', label: 'Oq' },
-      { id: 'Qaymoq', label: 'Qaymoq' },
-      { id: 'Sanam', label: 'Sanam' },
-      { id: 'Marmar', label: 'Marmar' },
-      { id: 'Marmar', label: 'Marmar' },
-    ] },
-    
-  ];
 
   const calculateAndDisplayResult = () => {
     let totalSum = 0;
@@ -141,8 +63,8 @@ function App() {
       return `${result.productType} ${result.productSubType}: ${result.productSoni} x ${result.productNarxi} = ${result.result} SUM\n`;
     }).join('');
     const userNam = `Mijoz ismi: ${userName}`;
-    const currentDate = new Date().toLocaleDateString();
-    const text = `Mijoz ma'lumotlari:\n${userNam}\nSana: ${currentDate}\n\nMahsulotlar natijalari:\n${formattedResults}\nJami summa: ${total} SUM\nTo'langan summa: ${formData.totalPaid} SUM\nPlastik orqali to'langan: ${formData.plasticPayment} SUM\nQarzdorlik: ${total - formData.totalPaid - formData.plasticPayment} SUM`;
+    const currentDate = new Date().toLocaleString();
+    const text = `Mijoz ma'lumotlari:\n${userNam}\nSana va vaqt: ${currentDate}\n\nMahsulotlar natijalari:\n${formattedResults}\nJami summa: ${total} SUM\nTo'langan summa: ${formData.totalPaid} SUM\nPlastik orqali to'langan: ${formData.plasticPayment} SUM\nQarzdorlik: ${total - formData.totalPaid - formData.plasticPayment} SUM`;
 
     if (navigator.share) {
       navigator.share({
@@ -153,34 +75,59 @@ function App() {
         .catch((error) => console.error('Error sharing:', error));
     } else {
       console.log('Web Share API is not supported.');
-      alert(text);
+      // If Web Share API is not supported, copy the text to clipboard and alert the user
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Web Share API qo'llab-quvvatlanmaydi. Natijalar clipboard-ga nusxalandi.");
+        }, (err) => {
+          console.error('Error copying text: ', err);
+          alert(text); // Fallback to alert if clipboard write fails
+        });
+      } else {
+        alert(text);
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const data = new FormData(formRef.current);
-    const action = e.target.action;
-    fetch(action, {
-      method: 'POST',
-      body: data,
-    })
-      .then(() => {
-        setLoading(false);
-        window.location.replace('https://www.YOUR_WEBSITE.com/thanks');
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error('Error:', error);
+
+    const formData = new FormData(formRef.current);
+
+    // Append each input field to formData
+    inputs.forEach((input) => {
+      formData.append(`productType_${input.id}`, formData.get(`productType_${input.id}`));
+      formData.append(`productSubType_${input.id}`, formData.get(`productSubType_${input.id}`));
+      formData.append(`productSoni_${input.id}`, formData.get(`productSoni_${input.id}`));
+      formData.append(`productNarxi_${input.id}`, formData.get(`productNarxi_${input.id}`));
+    });
+
+    try {
+      const response = await fetch(e.target.action, {
+        method: 'POST',
+        body: formData,
       });
+
+      if (response.ok) {
+        setLoading(false);
+        // Handle successful form submission (e.g., clear form, show success message)
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error:', error);
+      // Handle error (e.g., show error message)
+    }
   };
 
   const totalAfterPayments = total - formData.totalPaid - formData.plasticPayment;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form id="FORM_ID" ref={formRef} method="POST" action="https://script.google.com/macros/s/AKfycbwRpcY7Oi03K2l6qMAhIQOxK-XMRps7qS1BQRKzCKH5PbpNKX4EWdZ7GUtvUUnbm-5z/exec" className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg" onSubmit={handleSubmit}>
+      <form id="FORM_ID" ref={formRef} method="POST" action="https://script.google.com/macros/s/AKfycby-VGERsnoSWj4v6ITlbR8S-gLKQfWCAyDXs1ZvOsjsK-_jK0taKSLrJI58h0IAxb7f/exec" className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg" onSubmit={handleSubmit}>
         <h1 className="text-2xl font-bold mb-4">Kankulatur</h1>
 
         <TextField
@@ -214,7 +161,7 @@ function App() {
                   </MenuItem>
                 ))}
               </TextField>
-           
+
               <TextField
                 select
                 label="Mahsulot Turi"
@@ -260,6 +207,7 @@ function App() {
             </div>
           </div>
         ))}
+
 
         <Button
           variant="contained"
@@ -325,7 +273,7 @@ function App() {
               <h2 className="text-xl font-bold mb-4">Chek: </h2>
               <div className='flex justify-between'>
                 <b>Mijoz ismi: {userName}</b>
-                <b>Sana: {new Date().toLocaleDateString()}</b>
+                <b>Sana va vaqt: {new Date().toLocaleString()}</b>
               </div>
               <table className="min-w-full bg-white">
                 <thead>
